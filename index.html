@@ -46,9 +46,7 @@ HTML
         let rawData = [];
         let chartInstance = null;
         let currentPilier = '';
-
-        
-        // 1. Fonction corrigée pour parser le CSV en ignorant les espaces
+      // 1. Fonction corrigée pour parser le CSV en ignorant les espaces
         function parseCSV(text) {
             // Découpage par ligne
             const lines = text.split(/\r?\n/).map(line => line.trim()).filter(line => line);
@@ -64,8 +62,7 @@ HTML
                     description: row[3] ? row[3].replace(/^"|"$/g, '').trim() : ''
                 };
             });
-        }
-
+        }    
         // 2. Initialisation et récupération des données
         async function initData() {
             try {
