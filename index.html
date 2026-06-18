@@ -141,7 +141,7 @@
                     <!-- Sélecteurs rapides de statut -->
                     <div class="flex items-center gap-1.5 self-start">
                         <span class="text-xs text-slate-400 font-medium mr-1.5 hidden md:inline">Filtrer par statut :</span>
-                        <button onclick="setStatusFilter('all')" id="filter-stat-all" class="px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-900 text-white shadow-sm transition-all">Tous</button>
+                        <button onclick="setStatusFilter('all')" id="filter-stat-all" class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-slate-900 text-white shadow-sm transition-all">Tous</button>
                         <button onclick="setStatusFilter('adoptée')" id="filter-stat-adopt" class="px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-100 hover:bg-slate-200/80 text-slate-700 transition-all">Adoptées</button>
                         <button onclick="setStatusFilter('en cours')" id="filter-stat-pending" class="px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-100 hover:bg-slate-200/80 text-slate-700 transition-all">En cours</button>
                     </div>
@@ -168,6 +168,88 @@
                             </tr>
                         </tbody>
                     </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 3 : À Propos de l'Observatoire -->
+        <section class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+            <div class="border-b border-slate-100 p-6 flex items-center gap-2 bg-slate-50/50">
+                <i data-lucide="book-open" class="w-5 h-5 text-emerald-600"></i>
+                <h2 class="text-xl font-bold text-slate-900">À propos de l'Observatoire IA Afrique</h2>
+            </div>
+            
+            <div class="p-6 space-y-8">
+                <!-- Présentation et Vision -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="space-y-3">
+                        <h3 class="text-lg font-bold text-slate-900">Notre Mission</h3>
+                        <p class="text-sm text-slate-600 leading-relaxed">
+                            L'Observatoire a pour but de centraliser, d'analyser et de rendre accessibles les données relatives au déploiement de l'intelligence artificielle sur le continent. En mettant en lumière les plans d'action d'États pionniers comme le <strong>Sénégal</strong>, le <strong>Rwanda</strong>, l'<strong>Égypte</strong> et le <strong>Kenya</strong>, la plateforme favorise la convergence des politiques publiques en harmonie avec la <strong>Stratégie Continentale de l'Union Africaine (UA)</strong>.
+                        </p>
+                    </div>
+                    <div class="space-y-3">
+                        <h3 class="text-lg font-bold text-slate-900">Souveraineté & Synergies</h3>
+                        <p class="text-sm text-slate-600 leading-relaxed">
+                            À l'heure où l'IA redéfinit la compétitivité mondiale, l'Afrique doit concevoir des modèles adaptés à ses réalités linguistiques, culturelles et socio-économiques. Cet espace est un outil d'intelligence collective d'aide à la décision pour les chercheurs, les décideurs publics, et l'écosystème entrepreneurial privé.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Méthodologie d'Évaluation (Les 4 Piliers de Notation) -->
+                <div class="border-t border-slate-100 pt-6 space-y-4">
+                    <div class="space-y-1">
+                        <h3 class="text-lg font-bold text-slate-900">Méthodologie de Notation</h3>
+                        <p class="text-xs text-slate-500">Chaque pilier stratégique de l'onglet 1 est évalué sur 100 points selon un barème de maturité rigoureux :</p>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-100 space-y-2">
+                            <div class="flex items-center gap-2 text-emerald-700">
+                                <i data-lucide="target" class="w-4 h-4"></i>
+                                <span class="text-xs font-bold uppercase tracking-wider">1. Objectifs (25 pts)</span>
+                            </div>
+                            <p class="text-xs text-slate-600 leading-relaxed">Clarté et précision des cibles prospectives (ex: volumes chiffrés de talents à former, secteurs prioritaires ciblés).</p>
+                        </div>
+                        
+                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-100 space-y-2">
+                            <div class="flex items-center gap-2 text-emerald-700">
+                                <i data-lucide="wallet" class="w-4 h-4"></i>
+                                <span class="text-xs font-bold uppercase tracking-wider">2. Budget (25 pts)</span>
+                            </div>
+                            <p class="text-xs text-slate-600 leading-relaxed">Lignes budgétaires dédiées, partenariats public-privé (PPP) identifiés et calendrier d'exécution financière clair.</p>
+                        </div>
+                        
+                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-100 space-y-2">
+                            <div class="flex items-center gap-2 text-emerald-700">
+                                <i data-lucide="shield" class="w-4 h-4"></i>
+                                <span class="text-xs font-bold uppercase tracking-wider">3. Gouvernance (25 pts)</span>
+                            </div>
+                            <p class="text-xs text-slate-600 leading-relaxed">Création d'institutions spécifiques, de comités d'éthique nationaux ou d'agences chargées d'administrer le plan IA.</p>
+                        </div>
+                        
+                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-100 space-y-2">
+                            <div class="flex items-center gap-2 text-emerald-700">
+                                <i data-lucide="activity" class="w-4 h-4"></i>
+                                <span class="text-xs font-bold uppercase tracking-wider">4. Maturité (25 pts)</span>
+                            </div>
+                            <p class="text-xs text-slate-600 leading-relaxed">Degré de déploiement réel sur le terrain (infrastructures cloud physiques, centres d'excellence ou lois déjà votées).</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Guide de mise à jour collaborative -->
+                <div class="bg-slate-50 rounded-xl p-5 border border-slate-100 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                    <div class="space-y-1">
+                        <h4 class="text-sm font-bold text-slate-900 flex items-center gap-1.5">
+                            <i data-lucide="refresh-cw" class="w-4 h-4 text-emerald-600"></i>
+                            Mise à jour collaborative en temps réel
+                        </h4>
+                        <p class="text-xs text-slate-600 leading-relaxed max-w-2xl">
+                            Les données affichées sont directement extraites de votre fichier <strong>Google Sheets connecté</strong>. Pour ajouter un pays, modifier une description ou actualiser un score, éditez simplement votre classeur partagé. La synchronisation est automatique sous 60 secondes.
+                        </p>
+                    </div>
+                    <span class="text-xs bg-slate-200/80 text-slate-700 font-semibold px-3 py-1.5 rounded-lg border border-slate-300/30 whitespace-nowrap">Hébergement : GitHub Pages</span>
                 </div>
             </div>
         </section>
@@ -255,7 +337,7 @@
                 badgeDot.className = "relative inline-flex rounded-full h-3.5 w-3.5 bg-amber-500";
                 badgeTitle.innerText = "Mode Démo";
                 badgeTitle.className = "font-bold text-amber-400 leading-none mb-1";
-                badgeDesc.innerText = customText || "Données embarquées actives";
+                badgeDesc.innerText = customText || "Données de simulation actives";
             }
         }
 
