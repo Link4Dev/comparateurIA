@@ -212,6 +212,30 @@ HTML
             }
         }
         window.onload = initData;
+        // 2. Initialisation et récupération des données
+        async function initData() {
+            try {
+                const response = await fetch(GOOGLE_SHEETS_CSV_URL);
+                const csvText = await response.text();
+                rawData = parseCSV(csvText);
+
+                // Extraire la liste unique des piliers pour générer les boutons
+                const piliers = [...new Set(rawData.map(item => item.pilier))];
+                renderFilterButtons(piliers);
+
+                // Sélectionner le premier pilier par défaut
+                if (piliers.length > 0) {
+                    updateDashboard(piliers[0]);
+                }
+                
+                // Lancer le chargement du deuxième tableau
+                loadStatusTable();
+
+            } catch (error) {
+                console.error("Erreur lors de la récupération des données :", error);
+                document.getElementById('details-container').innerHTML = `<p class="text-red-500">Erreur de chargement des données Google Sheets.</p>`;
+            }
+        }
     </script>
 </body>
 </html>
