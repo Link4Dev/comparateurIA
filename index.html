@@ -174,6 +174,43 @@ HTML
         }
 
         // Lancement au chargement de la page
+        // Fonction pour récupérer et afficher le tableau des statuts
+        async function loadStatusTable() {
+            try {
+                const response = await fetch(GOOGLE_SHEETS_STATUS_URL);
+                const csvText = await response.text();
+                // On réutilise la même fonction de découpage robuste
+                const statusData = parseCSV(csvText); 
+                
+                const tableBody = document.getElementById('status-table-body');
+                tableBody.innerHTML = ''; // On vide le message de chargement
+
+                statusData.forEach(d => {
+                    // On définit une couleur de badge selon le statut
+                    let badgeClass = "bg-gray-100 text-gray-800";
+                    let statut = d.pilier.toLowerCase(); // On utilise la 2e colonne (qui est 'pilier' dans notre parseur) pour le statut
+                    
+                    if (statut.includes('adoptée') || statut.includes('oui')) badgeClass = "bg-green-100 text-green-800";
+                    else if (statut.includes('en cours') || statut.includes('élaboration')) badgeClass = "bg-yellow-100 text-yellow-800";
+                    else if (statut.includes('non') || statut.includes('pas')) badgeClass = "bg-red-100 text-red-800";
+
+                    const tr = document.createElement('tr');
+                    tr.className = "hover:bg-gray-50 transition-colors";
+                    tr.innerHTML = `
+                        <td class="py-3 px-4 text-sm font-medium text-gray-900">${d.pays}</td>
+                        <td class="py-3 px-4 text-sm">
+                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${badgeClass}">
+                                ${d.pilier} <!-- Correspond à la colonne Statut -->
+                            </span>
+                        </td>
+                        <td class="py-3 px-4 text-sm text-gray-600">${d.score || d.description}</td>
+                    `;
+                    tableBody.appendChild(tr);
+                });
+            } catch (error) {
+                console.error("Erreur chargement tableau statut:", error);
+            }
+        }
         window.onload = initData;
     </script>
 </body>
