@@ -22,6 +22,7 @@ HTML
             <span class="block text-sm font-medium text-gray-700 mb-2">Sélectionner un Pilier Stratégique :</span>
             <div id="filter-container" class="flex flex-wrap gap-2">
                 <!-- Les boutons de filtres seront injectés ici par JavaScript -->
+                
             </div>
         </div>
 
@@ -38,10 +39,30 @@ HTML
             </div>
         </div>
     </div>
-
+<!-- NOUVELLE SECTION : Tableau récapitulatif des statuts -->
+        <div class="mt-12 border-t border-gray-200 pt-8">
+            <h3 class="text-xl font-bold text-gray-900 mb-4">Cartographie de l'Écosystème</h3>
+            <p class="text-sm text-gray-500 mb-4">État des lieux de l'adoption des stratégies IA par pays.</p>
+            
+            <div class="overflow-x-auto">
+                <table class="min-w-full bg-white border border-gray-200 rounded-lg shadow-sm">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="py-3 px-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider border-b">Pays</th>
+                            <th class="py-3 px-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider border-b">Statut</th>
+                            <th class="py-3 px-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider border-b">Détails</th>
+                        </tr>
+                    </thead>
+                    <tbody id="status-table-body" class="divide-y divide-gray-200">
+                        <!-- Les lignes du tableau s'afficheront ici -->
+                        <tr><td colspan="3" class="py-4 text-center text-sm text-gray-500">Chargement des données...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     <script>
         // URL DE VOTRE GOOGLE SHEETS (À remplacer par votre lien d'export CSV)
-        const GOOGLE_SHEETS_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRUUItLUj_0oHiiNDvyO6nvYJkchBWwI7A1hQJqyAY6iij7utnsi_QGpIHy45jFcD_5apGqm_v7i7qu/pub?output=csv';
+        const GOOGLE_SHEETS_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRUUItLUj_0oHiiNDvyO6nvYJkchBWwI7A1hQJqyAY6iij7utnsi_QGpIHy45jFcD_5apGqm_v7i7qu/pubhtml?gid=1772023989&single=true';
 
         let rawData = [];
         let chartInstance = null;
