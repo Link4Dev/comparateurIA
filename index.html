@@ -4,109 +4,332 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Explorateur des Stratégies IA en Afrique</title>
-    <!-- Tailwind CSS pour un design moderne et responsive -->
+    <!-- Tailwind CSS pour un design moderne, élégant et responsive -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Chart.js pour le graphique interactif -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Lucide Icons pour des icônes élégantes -->
+    <script src="https://unpkg.com/lucide@latest"></script>
 </head>
-<body class="bg-gray-50 text-gray-800 font-sans p-6">
+<body class="bg-slate-50 text-slate-800 font-sans p-4 md:p-8 min-h-screen">
 
-    <div class="max-w-5xl mx-auto bg-white rounded-xl shadow-md overflow-hidden p-6">
-        <h2 class="text-2xl font-bold text-gray-900 mb-2">Comparatif des Stratégies Nationales IA</h2>
-        <p class="text-sm text-gray-500 mb-6">Mise à jour dynamique via Google Sheets</p>
-
-        <!-- Filtres par Piliers -->
-        <div class="mb-6">
-            <span class="block text-sm font-medium text-gray-700 mb-2">Sélectionner un Pilier Stratégique :</span>
-            <div id="filter-container" class="flex flex-wrap gap-2">
-                <!-- Les boutons de filtres seront injectés ici par JavaScript -->
+    <div class="max-w-6xl mx-auto space-y-8">
+        
+        <!-- EN-TÊTE PRINCIPALE -->
+        <header class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-gradient-to-r from-emerald-800 to-teal-900 text-white rounded-2xl p-6 md:p-8 shadow-lg">
+            <div class="space-y-1">
+                <div class="flex items-center gap-2">
+                    <span class="bg-emerald-500 text-xs font-bold uppercase px-2.5 py-1 rounded-md tracking-wider">Observatoire IA</span>
+                </div>
+                <h1 class="text-3xl font-extrabold tracking-tight">Afrique & Intelligence Artificielle</h1>
+                <p class="text-emerald-100 text-sm max-w-2xl">Visualisation, comparaison et cartographie de l'état d'avancement des stratégies nationales d'IA sur le continent africain.</p>
             </div>
-        </div>
+            
+            <!-- Indicateur de Source de Données -->
+            <div class="flex items-center">
+                <div id="data-status-badge" class="bg-white/10 backdrop-blur-md border border-white/20 px-4 py-3 rounded-xl flex items-center gap-3">
+                    <span class="relative flex h-3.5 w-3.5">
+                        <span id="badge-ping" class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+                        <span id="badge-dot" class="relative inline-flex rounded-full h-3.5 w-3.5 bg-blue-500"></span>
+                    </span>
+                    <div class="text-xs">
+                        <p class="font-bold text-white leading-none mb-1" id="badge-title">Chargement...</p>
+                        <p class="text-emerald-200/80 leading-none text-[10px]" id="badge-desc">Initialisation du système</p>
+                    </div>
+                </div>
+            </div>
+        </header>
 
-        <!-- Zone d'affichage : Graphique + Détails -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-            <!-- Emplacement du graphique -->
-            <div class="relative h-64 md:h-80">
-                <canvas id="aiChart"></canvas>
+        <!-- SECTION 1 : Graphique Comparatif (Données de l'onglet 1) -->
+        <section class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+            <div class="border-b border-slate-100 p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-slate-50/50">
+                <div class="space-y-1">
+                    <div class="flex items-center gap-2">
+                        <i data-lucide="bar-chart-3" class="w-5 h-5 text-emerald-600"></i>
+                        <h2 class="text-xl font-bold text-slate-900">Analyse Comparative des Priorités</h2>
+                    </div>
+                    <p class="text-xs text-slate-500">Sélectionnez un pilier stratégique pour mesurer l'intensité des efforts de chaque pays</p>
+                </div>
+                <span class="self-start sm:self-center px-3 py-1 text-xs font-semibold text-teal-800 bg-teal-50 border border-teal-100 rounded-full">Onglet 1</span>
             </div>
 
-            <!-- Emplacement des descriptions textuelles dynamiques -->
-            <div id="details-container" class="space-y-4 max-h-80 overflow-y-auto pr-2">
-                <p class="text-gray-400 italic">Sélectionnez un pilier pour afficher les détails par pays.</p>
+            <div class="p-6 space-y-6">
+                <!-- Filtres par Piliers -->
+                <div class="space-y-2">
+                    <span class="block text-xs font-bold uppercase tracking-wider text-slate-400">Piliers Stratégiques</span>
+                    <div id="filter-container" class="flex flex-wrap gap-2">
+                        <!-- Boutons injectés dynamiquement -->
+                        <span class="text-sm text-slate-400 italic">Génération des piliers...</span>
+                    </div>
+                </div>
+
+                <!-- Zone d'affichage : Graphique + Détails -->
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch pt-2">
+                    <!-- Graphique -->
+                    <div class="lg:col-span-7 bg-slate-50 rounded-xl p-4 border border-slate-100 flex flex-col justify-between min-h-[300px]">
+                        <div class="relative w-full flex-grow h-64 md:h-80">
+                            <canvas id="aiChart"></canvas>
+                        </div>
+                    </div>
+                    
+                    <!-- Détails textuels -->
+                    <div class="lg:col-span-5 flex flex-col">
+                        <span class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Décryptage & Actions Nationales</span>
+                        <div id="details-container" class="space-y-4 max-h-[320px] overflow-y-auto pr-2 flex-grow">
+                            <p class="text-slate-400 italic text-sm">Sélectionnez un pilier ci-dessus pour comparer les notes et lire les analyses de chaque pays.</p>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
+        </section>
+
+        <!-- SECTION 2 : Cartographie Générale (Données de l'onglet 2) -->
+        <section class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+            <div class="border-b border-slate-100 p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-slate-50/50">
+                <div class="space-y-1">
+                    <div class="flex items-center gap-2">
+                        <i data-lucide="globe" class="w-5 h-5 text-emerald-600"></i>
+                        <h2 class="text-xl font-bold text-slate-900">Cartographie Générale de l'Afrique</h2>
+                    </div>
+                    <p class="text-xs text-slate-500">État d'avancement réglementaire et institutionnel par nation</p>
+                </div>
+                <span class="self-start sm:self-center px-3 py-1 text-xs font-semibold text-purple-800 bg-purple-50 border border-purple-100 rounded-full">Onglet 2</span>
+            </div>
+
+            <div class="p-6 space-y-6">
+                <!-- Cartes Statistiques d'avancement -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-100 flex items-center justify-between">
+                        <div>
+                            <p class="text-xs font-medium text-slate-500">Pays Répertoriés</p>
+                            <h4 class="text-2xl font-bold text-slate-950 mt-1" id="stat-total">0</h4>
+                        </div>
+                        <div class="p-2.5 bg-slate-200/60 rounded-lg text-slate-600">
+                            <i data-lucide="map" class="w-5 h-5"></i>
+                        </div>
+                    </div>
+                    <div class="bg-emerald-50/30 p-4 rounded-xl border border-emerald-100/50 flex items-center justify-between">
+                        <div>
+                            <p class="text-xs font-medium text-emerald-700">Stratégie Adoptée</p>
+                            <h4 class="text-2xl font-bold text-emerald-900 mt-1" id="stat-adopt">0</h4>
+                        </div>
+                        <div class="p-2.5 bg-emerald-100/80 rounded-lg text-emerald-700">
+                            <i data-lucide="check-circle" class="w-5 h-5"></i>
+                        </div>
+                    </div>
+                    <div class="bg-amber-50/30 p-4 rounded-xl border border-amber-100/50 flex items-center justify-between">
+                        <div>
+                            <p class="text-xs font-medium text-amber-700">En cours / Élaboration</p>
+                            <h4 class="text-2xl font-bold text-amber-900 mt-1" id="stat-pending">0</h4>
+                        </div>
+                        <div class="p-2.5 bg-amber-100/80 rounded-lg text-amber-700">
+                            <i data-lucide="loader" class="w-5 h-5"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Filtres et Recherche de la Table -->
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-2">
+                    <!-- Barre de recherche -->
+                    <div class="relative flex-grow max-w-md">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
+                            <i data-lucide="search" class="w-4 h-4"></i>
+                        </span>
+                        <input type="text" id="status-search" oninput="filterStatusTable()" placeholder="Rechercher un pays d'Afrique..." class="w-full pl-9 pr-4 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all">
+                    </div>
+                    
+                    <!-- Sélecteurs rapides de statut -->
+                    <div class="flex items-center gap-1.5 self-start">
+                        <span class="text-xs text-slate-400 font-medium mr-1.5 hidden md:inline">Filtrer par statut :</span>
+                        <button onclick="setStatusFilter('all')" id="filter-stat-all" class="px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-900 text-white shadow-sm transition-all">Tous</button>
+                        <button onclick="setStatusFilter('adoptée')" id="filter-stat-adopt" class="px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-100 hover:bg-slate-200/80 text-slate-700 transition-all">Adoptées</button>
+                        <button onclick="setStatusFilter('en cours')" id="filter-stat-pending" class="px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-100 hover:bg-slate-200/80 text-slate-700 transition-all">En cours</button>
+                    </div>
+                </div>
+
+                <!-- Table responsive -->
+                <div class="overflow-x-auto rounded-xl border border-slate-200">
+                    <table class="min-w-full divide-y divide-slate-200 bg-white">
+                        <thead class="bg-slate-50">
+                            <tr>
+                                <th class="py-3.5 px-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Pays</th>
+                                <th class="py-3.5 px-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider w-44">Statut</th>
+                                <th class="py-3.5 px-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Avancées / Détails stratégiques</th>
+                            </tr>
+                        </thead>
+                        <tbody id="status-table-body" class="divide-y divide-slate-100">
+                            <tr>
+                                <td colspan="3" class="py-8 text-center text-sm text-slate-400 italic">
+                                    <div class="flex flex-col items-center justify-center gap-2">
+                                        <i data-lucide="loader" class="animate-spin w-6 h-6 text-emerald-600"></i>
+                                        <span>Génération de la cartographie africaine...</span>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
     </div>
 
+    <!-- CODE LOGIQUE & GESTION DES DONNÉES -->
     <script>
-        // /!\ ATTENTION : COLLEZ VOTRE LIEN GOOGLE SHEETS ICI /!\
-        const GOOGLE_SHEETS_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRUUItLUj_0oHiiNDvyO6nvYJkchBWwI7A1hQJqyAY6iij7utnsi_QGpIHy45jFcD_5apGqm_v7i7qu/pub?gid=0&single=true&output=csv';
+        // ==========================================
+        // CONFIGURATION : LIENS VERS VOS ONGLETS DE GOOGLE SHEETS
+        // ==========================================
+        const URL_ONGLET_1_COMPLET = 'VOTRE_LIEN_CSV_ONGLET_1'; // Premier onglet (Priorités)
+        const URL_ONGLET_2_STATUT  = 'VOTRE_LIEN_CSV_ONGLET_2'; // Second onglet (Maturité générale)
+        // ==========================================
 
-        let rawData = [];
+        // DONNÉES DE DÉMONSTRATION (En cas de lien vide ou d'erreur réseau pour tester immédiatement)
+        const MOCK_DATA_COMPLET = [
+            { pays: "Sénégal", pilier: "Capital Humain", score: 85, description: "Objectif majeur de former 90 000 Sénégalais(e)s d'ici 2028, répartis entre décideurs (5%), formateurs (10%), professionnels (15%) et experts techniques (20%)." },
+            { pays: "Sénégal", pilier: "Écosystème & Innovation", score: 75, description: "Approche \"From Lab to Market\" visant à propulser l'économie de la donnée en connectant la recherche universitaire au marché via le futur \"Cluster Sénégal IA\"." },
+            { pays: "Sénégal", pilier: "Éthique & Confiance", score: 80, description: "Objectif \"L'IA en toute confiance\" prévoyant un cadre réglementaire et normatif strict pour encadrer les risques, protéger la vie privée et affirmer la souveraineté numérique." },
+            { pays: "Sénégal", pilier: "Infrastructures & Calcul", score: 65, description: "Modernisation des infrastructures technologiques (Data Centers nationaux, connectivité) pour garantir un hébergement sécurisé et souverain des données critiques." },
+            
+            { pays: "Égypte", pilier: "Capital Humain", score: 75, description: "Déploiement de programmes de certifications de masse pour les diplômés universitaires et intégration de l'IA dans l'enseignement secondaire." },
+            { pays: "Égypte", pilier: "Écosystème & Innovation", score: 80, description: "Création de pôles d'innovation nationaux et financement direct de plus de 250 startups d'IA appliquée d'ici 2030." },
+            { pays: "Égypte", pilier: "Éthique & Confiance", score: 70, description: "Comité national de l'IA chargé d'édicter des lignes directrices pour un usage digne de confiance dans le secteur public." },
+            { pays: "Égypte", pilier: "Infrastructures & Calcul", score: 90, description: "Priorité absolue à l'IA souveraine grâce à d'importants investissements dans des supercalculateurs et le développement de grands modèles de langage en langue arabe." },
+
+            { pays: "Rwanda", pilier: "Capital Humain", score: 70, description: "Focus sur l'alphabétisation IA de la population active et intégration de programmes d'IA appliquée dans l'enseignement supérieur." },
+            { pays: "Rwanda", pilier: "Écosystème & Innovation", score: 75, description: "Positionnement du pays comme un bac à sable technologique régional pour tester des prototypes d'IA et de drones dans les zones rurales." },
+            { pays: "Rwanda", pilier: "Éthique & Confiance", score: 95, description: "Modèle continental pour l'éthique de l'IA avec la création du \"Responsible AI Office\" assurant une gouvernance proactive." },
+            { pays: "Rwanda", pilier: "Infrastructures & Calcul", score: 65, description: "Amélioration des réseaux cloud nationaux et négociation de hubs de données régionaux écoresponsables." },
+
+            { pays: "Kenya", pilier: "Capital Humain", score: 75, description: "Soutien massif des formations tech de la Silicon Savannah pour orienter la jeunesse vers le codage avancé et l'analyse de données." },
+            { pays: "Kenya", pilier: "Écosystème & Innovation", score: 88, description: "Écosystème privé ultra-dynamique, axé sur l'utilisation de l'IA pour l'agriculture de précision (rendements) et les fintechs mobiles (crédit)." },
+            { pays: "Kenya", pilier: "Éthique & Confiance", score: 80, description: "Publication récente du projet de loi \"AI Bill\" visant à structurer un cadre juridique précis et limiter les biais technologiques." },
+            { pays: "Kenya", pilier: "Infrastructures & Calcul", score: 70, description: "Modernisation des capacités de traitement de données pour héberger localement les services des géants mondiaux du Web." }
+        ];
+
+        const MOCK_DATA_STATUT = [
+            { pays: "Sénégal", statut: "Adoptée (2023)", details: "Feuille de route nationale ambitieuse axée sur le développement du capital humain de qualité et l'accélération du Plan Sénégal Émergent (PSE)." },
+            { pays: "Rwanda", statut: "Adoptée (2023)", details: "Politique nationale centrée sur l'IA responsable, les services publics et le développement d'un pôle d'innovation éthique à Kigali." },
+            { pays: "Égypte", statut: "Adoptée (2021/2025)", details: "Stratégie nationale robuste déclinée en v2, mettant le paquet sur l'IA souveraine et le traitement automatique de l'arabe." },
+            { pays: "Kenya", statut: "En cours (Projet de loi)", details: "Politique nationale en phase finale de cadrage, soutenue par le dynamisme de la Silicon Savannah et le projet de loi AI Bill." },
+            { pays: "Nigeria", statut: "En cours", details: "Lancement d'ateliers d'intelligence collective nationale et recrutement de chercheurs émérites pour élaborer la vision pays." },
+            { pays: "Afrique du Sud", statut: "En cours", details: "Recherches universitaires poussées et création d'un institut national pour l'IA, sans politique publique souveraine unifiée encore votée." },
+            { pays: "Tunisie", statut: "Non initiée", details: "Forte communauté académique et startups actives mais sans stratégie gouvernementale formelle ou cadre légal national." },
+            { pays: "Ghana", statut: "En cours", details: "Développement d'un projet pilote de stratégie soutenu par des alliances sous-régionales et des universités d'excellence." }
+        ];
+
+        // ÉTAT DE L'APPLICATION
+        let rawChartData = [];
+        let rawStatusData = [];
         let chartInstance = null;
         let currentPilier = '';
+        let currentSearchQuery = '';
+        let currentStatusFilter = 'all';
 
-        // 1. Fonction corrigée pour parser le CSV en ignorant les espaces (évite le bug "Écosystème & Innovation")
+        // Fonction pour parser le format CSV en gérant proprement les guillemets et espaces
         function parseCSV(text) {
             const lines = text.split(/\r?\n/).map(line => line.trim()).filter(line => line);
+            if (lines.length === 0) return [];
+            
             return lines.slice(1).map(line => {
-                const row = line.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
-                return {
-                    pays: row[0] ? row[0].replace(/^"|"$/g, '').trim() : '',
-                    pilier: row[1] ? row[1].replace(/^"|"$/g, '').trim() : '',
-                    score: parseFloat(row[2]) || 0,
-                    description: row[3] ? row[3].replace(/^"|"$/g, '').trim() : ''
-                };
+                return line.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(cell => {
+                    return cell.replace(/^"|"$/g, '').trim();
+                });
             });
         }
 
-        // 2. Initialisation et récupération des données
-        async function initData() {
-            try {
-                const response = await fetch(GOOGLE_SHEETS_CSV_URL);
-                const csvText = await response.text();
-                rawData = parseCSV(csvText);
+        // Met à jour l'en-tête de statut de la source de données
+        function updateStatusBadge(isLive, customText = "") {
+            const badgePing = document.getElementById('badge-ping');
+            const badgeDot = document.getElementById('badge-dot');
+            const badgeTitle = document.getElementById('badge-title');
+            const badgeDesc = document.getElementById('badge-desc');
 
-                // Extraire la liste unique des piliers pour générer les boutons
-                const piliers = [...new Set(rawData.map(item => item.pilier))];
-                renderFilterButtons(piliers);
-
-                // Sélectionner le premier pilier par défaut
-                if (piliers.length > 0) {
-                    updateDashboard(piliers[0]);
-                }
-            } catch (error) {
-                console.error("Erreur lors de la récupération des données :", error);
-                document.getElementById('details-container').innerHTML = `<p class="text-red-500">Erreur de chargement des données Google Sheets.</p>`;
+            if (isLive) {
+                badgePing.className = "animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75";
+                badgeDot.className = "relative inline-flex rounded-full h-3.5 w-3.5 bg-emerald-500";
+                badgeTitle.innerText = "Mode Live";
+                badgeTitle.className = "font-bold text-emerald-400 leading-none mb-1";
+                badgeDesc.innerText = "Données Google Sheets";
+            } else {
+                badgePing.className = "absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75";
+                badgeDot.className = "relative inline-flex rounded-full h-3.5 w-3.5 bg-amber-500";
+                badgeTitle.innerText = "Mode Démo";
+                badgeTitle.className = "font-bold text-amber-400 leading-none mb-1";
+                badgeDesc.innerText = customText || "Données embarquées actives";
             }
         }
 
-        // 3. Génération dynamique des boutons de filtres
+        // --- SECTION 1 : LOGIQUE GRAPHIQUE ---
+        async function loadChartData() {
+            const isPlaceholder = URL_ONGLET_1_COMPLET.includes('VOTRE_LIEN_CSV');
+            
+            if (isPlaceholder) {
+                console.log("Graphique : Utilisation des données de simulation (Mode Démo).");
+                rawChartData = MOCK_DATA_COMPLET;
+                initializeChartDashboard();
+                updateStatusBadge(false, "Saisissez vos liens sheets");
+                return;
+            }
+
+            try {
+                const response = await fetch(URL_ONGLET_1_COMPLET);
+                if (!response.ok) throw new Error("Erreur de récupération réseau");
+                const csvText = await response.text();
+                const rows = parseCSV(csvText);
+
+                rawChartData = rows.map(r => ({
+                    pays: r[0] || 'Inconnu',
+                    pilier: r[1] || 'Non défini',
+                    score: parseFloat(r[2]) || 0,
+                    description: r[3] || ''
+                }));
+
+                initializeChartDashboard();
+                updateStatusBadge(true);
+            } catch (error) {
+                console.warn("Liaison Sheets Onglet 1 impossible, bascule vers le mode démo.", error);
+                rawChartData = MOCK_DATA_COMPLET;
+                initializeChartDashboard();
+                updateStatusBadge(false, "Données locales temporaires");
+            }
+        }
+
+        function initializeChartDashboard() {
+            const piliers = [...new Set(rawChartData.map(item => item.pilier))];
+            renderFilterButtons(piliers);
+
+            if (piliers.length > 0) {
+                updateDashboard(piliers[0]);
+            }
+        }
+
         function renderFilterButtons(piliers) {
             const container = document.getElementById('filter-container');
             container.innerHTML = '';
+            
             piliers.forEach(pilier => {
                 const btn = document.createElement('button');
                 btn.innerText = pilier;
-                btn.className = `px-4 py-2 text-sm font-medium rounded-lg border transition-all duration-200 btn-filter bg-white text-gray-700 border-gray-300 hover:bg-gray-50`;
+                btn.className = `px-4 py-2 text-xs font-semibold rounded-xl border transition-all duration-200 btn-filter bg-white text-slate-700 border-slate-200 hover:bg-slate-50 hover:border-slate-300`;
                 btn.onclick = () => updateDashboard(pilier);
                 btn.setAttribute('data-pilier', pilier);
                 container.appendChild(btn);
             });
         }
 
-        // 4. Mise à jour combinée du graphique et des descriptions
         function updateDashboard(selectedPilier) {
             currentPilier = selectedPilier;
             
+            // Gestion visuelle de l'état actif des boutons de piliers
             document.querySelectorAll('.btn-filter').forEach(btn => {
                 if (btn.getAttribute('data-pilier') === selectedPilier) {
-                    btn.className = "px-4 py-2 text-sm font-medium rounded-lg border bg-blue-600 text-white border-blue-600 btn-filter shadow-sm";
+                    btn.className = "px-4 py-2 text-xs font-semibold rounded-xl border bg-emerald-600 text-white border-emerald-600 btn-filter shadow-sm scale-[1.02] transition-all";
                 } else {
-                    btn.className = "px-4 py-2 text-sm font-medium rounded-lg border bg-white text-gray-700 border-gray-300 hover:bg-gray-50 btn-filter";
+                    btn.className = "px-4 py-2 text-xs font-semibold rounded-xl border bg-white text-slate-700 border-slate-200 hover:bg-slate-50 hover:border-slate-300 btn-filter transition-all";
                 }
             });
 
-            const filtered = rawData.filter(d => d.pilier === selectedPilier);
+            const filtered = rawChartData.filter(d => d.pilier === selectedPilier);
             const labels = filtered.map(d => d.pays);
             const scores = filtered.map(d => d.score);
 
@@ -120,32 +343,213 @@
                     datasets: [{
                         label: 'Intensité / Priorité (%)',
                         data: scores,
-                        backgroundColor: 'rgba(37, 99, 235, 0.2)',
-                        borderColor: 'rgba(37, 99, 235, 1)',
+                        backgroundColor: 'rgba(16, 185, 129, 0.15)',
+                        borderColor: 'rgba(16, 185, 129, 1)',
                         borderWidth: 2,
-                        borderRadius: 6
+                        borderRadius: 8,
+                        hoverBackgroundColor: 'rgba(16, 185, 129, 0.3)'
                     }]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    scales: { y: { beginAtZero: true, max: 100 } },
-                    plugins: { legend: { display: false } }
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100,
+                            grid: { color: '#f1f5f9' },
+                            ticks: { font: { size: 11, family: 'sans-serif' } }
+                        },
+                        x: {
+                            grid: { display: false },
+                            ticks: { font: { size: 11, weight: 'bold' } }
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: '#0f172a',
+                            titleFont: { size: 13, weight: 'bold' },
+                            bodyFont: { size: 12 },
+                            padding: 12,
+                            cornerRadius: 8
+                        }
+                    }
                 }
             });
 
             const detailsContainer = document.getElementById('details-container');
             detailsContainer.innerHTML = '';
+            
             filtered.forEach(d => {
                 const card = document.createElement('div');
-                card.className = "p-3 bg-gray-50 border-l-4 border-blue-500 rounded-r-lg shadow-sm";
-                card.innerHTML = `<h4 class="font-bold text-gray-900">${d.pays}</h4><p class="text-sm text-gray-600 mt-1">${d.description}</p>`;
+                card.className = "p-4 bg-slate-50 border-l-4 border-emerald-600 rounded-r-xl shadow-sm hover:shadow-md transition-all duration-200";
+                card.innerHTML = `
+                    <div class="flex justify-between items-center mb-1">
+                        <h4 class="font-bold text-slate-900">${d.pays}</h4>
+                        <span class="text-xs font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md">${d.score}%</span>
+                    </div>
+                    <p class="text-xs text-slate-600 mt-1.5 leading-relaxed">${d.description}</p>
+                `;
                 detailsContainer.appendChild(card);
             });
         }
 
+
+        // --- SECTION 2 : LOGIQUE DE LA CARTOGRAPHIE GÉNÉRALE ---
+        async function loadStatusData() {
+            const isPlaceholder = URL_ONGLET_2_STATUT.includes('VOTRE_LIEN_CSV');
+            
+            if (isPlaceholder) {
+                console.log("Cartographie : Utilisation des données de simulation (Mode Démo).");
+                rawStatusData = MOCK_DATA_STATUT;
+                renderStatusTable();
+                calculateStatistics();
+                return;
+            }
+
+            try {
+                const response = await fetch(URL_ONGLET_2_STATUT);
+                if (!response.ok) throw new Error("Erreur de récupération réseau");
+                const csvText = await response.text();
+                const rows = parseCSV(csvText);
+
+                rawStatusData = rows.map(r => ({
+                    pays: r[0] || 'Inconnu',
+                    statut: r[1] || 'Non initié',
+                    details: r[2] || '-'
+                }));
+
+                renderStatusTable();
+                calculateStatistics();
+            } catch (error) {
+                console.warn("Liaison Sheets Onglet 2 impossible, bascule vers le mode démo.", error);
+                rawStatusData = MOCK_DATA_STATUT;
+                renderStatusTable();
+                calculateStatistics();
+            }
+        }
+
+        // Calcul dynamique des indicateurs en haut du tableau
+        function calculateStatistics() {
+            const total = rawStatusData.length;
+            const adoptCount = rawStatusData.filter(d => {
+                const s = d.statut.toLowerCase();
+                return s.includes('adoptée') || s.includes('oui') || s.includes('publiée');
+            }).length;
+            const pendingCount = rawStatusData.filter(d => {
+                const s = d.statut.toLowerCase();
+                return s.includes('en cours') || s.includes('élaboration') || s.includes('conception');
+            }).length;
+
+            document.getElementById('stat-total').innerText = total;
+            document.getElementById('stat-adopt').innerText = adoptCount;
+            document.getElementById('stat-pending').innerText = pendingCount;
+        }
+
+        // Moteur d'affichage de la table
+        function renderStatusTable() {
+            const tableBody = document.getElementById('status-table-body');
+            tableBody.innerHTML = ''; 
+
+            // Filtres appliqués en cascade (recherche texte + bouton de statut)
+            const filteredData = rawStatusData.filter(d => {
+                const matchSearch = d.pays.toLowerCase().includes(currentSearchQuery.toLowerCase()) || 
+                                    d.details.toLowerCase().includes(currentSearchQuery.toLowerCase());
+                
+                let matchStatus = true;
+                const normStatus = d.statut.toLowerCase();
+                if (currentStatusFilter === 'adoptée') {
+                    matchStatus = normStatus.includes('adoptée') || normStatus.includes('oui') || normStatus.includes('publiée');
+                } else if (currentStatusFilter === 'en cours') {
+                    matchStatus = normStatus.includes('en cours') || normStatus.includes('élaboration') || normStatus.includes('conception');
+                }
+
+                return matchSearch && matchStatus;
+            });
+
+            if (filteredData.length === 0) {
+                tableBody.innerHTML = `
+                    <tr>
+                        <td colspan="3" class="py-12 text-center text-sm text-slate-400 italic">
+                            <div class="flex flex-col items-center gap-2">
+                                <i data-lucide="info" class="w-8 h-8 text-slate-300"></i>
+                                <span>Aucun pays trouvé avec ces critères de recherche.</span>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+                lucide.createIcons();
+                return;
+            }
+
+            filteredData.forEach(d => {
+                let badgeClass = "bg-slate-100 text-slate-800 border border-slate-200";
+                const normaliseStatut = d.statut.toLowerCase();
+
+                if (normaliseStatut.includes('adoptée') || normaliseStatut.includes('oui') || normaliseStatut.includes('publiée')) {
+                    badgeClass = "bg-emerald-50 text-emerald-800 border border-emerald-200/60";
+                } else if (normaliseStatut.includes('en cours') || normaliseStatut.includes('élaboration') || normaliseStatut.includes('conception')) {
+                    badgeClass = "bg-amber-50 text-amber-800 border border-amber-200/60";
+                } else if (normaliseStatut.includes('non') || normaliseStatut.includes('aucune')) {
+                    badgeClass = "bg-rose-50 text-rose-800 border border-rose-200/60";
+                }
+
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-slate-50/50 transition-colors";
+                tr.innerHTML = `
+                    <td class="py-4 px-4 text-sm font-semibold text-slate-900">${d.pays}</td>
+                    <td class="py-4 px-4 text-sm">
+                        <span class="px-3 py-1 inline-flex text-xs leading-5 font-bold rounded-full ${badgeClass}">
+                            ${d.statut}
+                        </span>
+                    </td>
+                    <td class="py-4 px-4 text-xs md:text-sm text-slate-600 leading-relaxed">${d.details}</td>
+                `;
+                tableBody.appendChild(tr);
+            });
+
+            // Initialise les icônes injectées dynamiquement
+            lucide.createIcons();
+        }
+
+        // Fonction pour filtrer dynamiquement le tableau via la barre de recherche
+        function filterStatusTable() {
+            currentSearchQuery = document.getElementById('status-search').value;
+            renderStatusTable();
+        }
+
+        // Fonction pour filtrer dynamiquement via les boutons de statut rapide
+        function setStatusFilter(filterType) {
+            currentStatusFilter = filterType;
+            
+            // Mise à jour de l'apparence des boutons de filtre de table
+            const btns = {
+                all: document.getElementById('filter-stat-all'),
+                'adoptée': document.getElementById('filter-stat-adopt'),
+                'en cours': document.getElementById('filter-stat-pending')
+            };
+
+            Object.keys(btns).forEach(key => {
+                if (key === filterType) {
+                    btns[key].className = "px-3 py-1.5 text-xs font-semibold rounded-lg bg-emerald-600 text-white shadow-sm transition-all";
+                } else {
+                    btns[key].className = "px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-100 hover:bg-slate-200/80 text-slate-700 transition-all";
+                }
+            });
+
+            renderStatusTable();
+        }
+
         // Lancement au chargement de la page
-        window.onload = initData;
+        window.onload = function() {
+            // Initialisation des icônes statiques globales
+            lucide.createIcons();
+            
+            // Chargement parallélisé des données
+            loadChartData();
+            loadStatusData();
+        };
     </script>
 </body>
 </html>
